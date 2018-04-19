@@ -4,6 +4,7 @@
   - start the the server by `node ExpressJS/app.js`.
 
   i. peer to peer messaging
+
     - go to `http://localhost:3000/chat`.
     - you can send message by clicking on any online client from right panel.
 
