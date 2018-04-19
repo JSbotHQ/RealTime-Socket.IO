@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Socket.IO chat</title>
+    <title>Socket.IO + Trails.js - group chat demo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font: 13px Helvetica, Arial; }
@@ -19,18 +19,18 @@
 <script>
     const socket = io('http://'+window.location.hostname+':3000');
     socket.on('connect', () => {
-        console.log(socket.id); // 'G5p5...'
+      $('#messages').append($('<li>').text('ID:'+socket.id));
     });
-    socket.on('message', function(msg){
+    socket.on('message', (msg)=>{
         $('#messages').append($('<li>').text(msg));
     });
     var params = new URLSearchParams(window.location.search.slice(1))
     var room = params.get('room')
     socket.emit('subscribe', room)
-    $(function () {
+    $(()=> {
 
-        $('form').submit(function(){
-            var message = $('#m').val();
+        $('form').submit(()=>{
+            let message = $('#m').val();
 
             $('#messages').append($('<li>').text(message));
             socket.emit('broadcast', { room: room, message: message });

@@ -1,48 +1,73 @@
 'use strict'
 
-const Service = require('trails/service')
-const io = require('socket.io')
+const Service = require('trails/service');
+
 /**
  * @module SocketService
  * @description socket
  */
 module.exports = class SocketService extends Service {
 
-    constructor(app){
-        console.log(`server instance`,app)
-        super(app)
-    }
+  constructor(app){
 
-    socketInit(app){
+    super(app)
+    this.io = require('socket.io')
+  }
 
+  socketInit(http){
 
-        // On socket client connection
-        io.on('connection', (socket)=>{
+    this.io = this.io(http)
 
+    // On socket client connection
+    this.io.on('connection', (socket)=> {
 
-            // Socket handlers
-            const onSend = (data)=> { io.to(data.id).emit('message', data.message); }
-            const onSubscribe = (room)=> { socket.join(room); }
-            const onUnSubscribe = (room)=> { socket.leave(room); }
-            const onBroadcast = (data)=> { socket.to(data.room).emit('message', data.message); }
-            const onDisconnect = ()=> { console.log(socket.id+' disconnected'); }
+      console.log(socket.id+' connected');
 
-            console.log(socket.id+' connected');
-            socket.on('disconnect', onDisconnect)
+      //HANDLERS
+      /**
+       * send all online friends list to all connected socket
+       */
+      const getOnlineFriends = ()=> {
 
-            //
-            io.emit('all', { data: Object.keys(io.sockets.sockets)})
-            io.to(socket.id).emit('message','ID: '+socket.id);
-            // Send a message to
-            socket.on('send', onSend);
+        let data = Object.keys(this.io.sockets.sockets)
+        this.io.emit('allOnlineFriends', { data })
+      }
+      /**
+       * Send a message to particular socket
+       * @param data
+       */
+      const onMessageSubmit = (data)=> { this.io.to(data.id).emit('message', data.message); }
+      /**
+       * Subscribe to join a room
+       * @param room
+       */
+      const onSubscribe = (room)=> { socket.join(room); }
+      /**
+       * Unsubscribe to leave a room
+       * @param room
+       */
+      const onUnSubscribe = (room)=> { socket.leave(room); }
+      /**
+       * Broadcast a message in room
+       * @param data
+       */
+      const onBroadcastToRoom = (data)=> { socket.to(data.room).emit('message', data.message); }
+      /**
+       * Socket client disconnection
+       */
+      const onDisconnect = ()=> {
+        console.log(socket.id+' disconnected');
+        getOnlineFriends();
+      }
 
-            // subscribe to join a room
-            socket.on('subscribe', onSubscribe)
-            // unsubscribe to leave a room
-            socket.on('unsubscribe', onUnSubscribe)
-            // broadcast a message in room
-            socket.on('broadcast', onBroadcast)
-        });
-    }
+      //LISTENERS
+      getOnlineFriends()
+      socket.on('messageSubmit', onMessageSubmit)
+      socket.on('subscribe', onSubscribe)
+      socket.on('unsubscribe', onUnSubscribe)
+      socket.on('broadcast', onBroadcastToRoom)
+      socket.on('disconnect', onDisconnect)
+    });
+  }
 }
 

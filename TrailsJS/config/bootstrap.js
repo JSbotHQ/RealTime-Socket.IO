@@ -1,6 +1,5 @@
 
-module.exports = function(app){
+module.exports = (app)=> {
 
-   app.services.SocketService.socketInit(app)
 
 }

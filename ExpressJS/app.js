@@ -17,28 +17,52 @@ app.get('/group', (req, res)=> {
 });
 
 // On socket client connection
-io.on('connection', (socket)=>{
+io.on('connection', (socket)=> {
 
-  // Socket handlers
-  const onSend = (data)=> { io.to(data.id).emit('message', data.message); }
+  console.log(socket.id+' connected');
+
+  //HANDLERS
+  /**
+   * send all online friends list to all connected socket
+   */
+  const getOnlineFriends = ()=> {
+
+    let data = Object.keys(io.sockets.sockets)
+    io.emit('allOnlineFriends', { data })
+  }
+  /**
+   * Send a message to particular socket
+   * @param data
+   */
+  const onMessageSubmit = (data)=> { io.to(data.id).emit('message', data.message); }
+  /**
+   * Subscribe to join a room
+   * @param room
+   */
   const onSubscribe = (room)=> { socket.join(room); }
+  /**
+   * Unsubscribe to leave a room
+   * @param room
+   */
   const onUnSubscribe = (room)=> { socket.leave(room); }
-  const onBroadcast = (data)=> { socket.to(data.room).emit('message', data.message); }
-  const onDisconnect = ()=> { console.log(socket.id+' disconnected'); }
+  /**
+   * Broadcast a message in room
+   * @param data
+   */
+  const onBroadcastToRoom = (data)=> { socket.to(data.room).emit('message', data.message); }
+  /**
+   * Socket client disconnection
+   */
+  const onDisconnect = ()=> {
+    console.log(socket.id+' disconnected');
+    getOnlineFriends();
+  }
 
-    console.log(socket.id+' connected');
-    socket.on('disconnect', onDisconnect)
-
-    //
-    io.emit('all', { data: Object.keys(io.sockets.sockets)})
-    io.to(socket.id).emit('message','ID: '+socket.id);
-    // Send a message to
-    socket.on('send', onSend);
-
-    // subscribe to join a room
-    socket.on('subscribe', onSubscribe)
-    // unsubscribe to leave a room
-    socket.on('unsubscribe', onUnSubscribe)
-    // broadcast a message in room
-    socket.on('broadcast', onBroadcast)
+  //LISTENERS
+  getOnlineFriends()
+  socket.on('messageSubmit', onMessageSubmit)
+  socket.on('subscribe', onSubscribe)
+  socket.on('unsubscribe', onUnSubscribe)
+  socket.on('broadcast', onBroadcastToRoom)
+  socket.on('disconnect', onDisconnect)
 });

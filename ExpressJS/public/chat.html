@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Socket.IO chat</title>
+    <title>Socket.IO + Express.js - chat demo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font: 13px Helvetica, Arial; }
@@ -20,25 +20,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     const socket = io('http://'+window.location.hostname+':3000');
-    socket.on('all', function(data){
+    socket.on('connect', ()=> {
+      $('#messages').append($('<li>').text('ID:'+socket.id));
+    });
+    socket.on('allOnlineFriends', (data)=>{
+        $('#online').empty()
         Object.keys(data.data).forEach(function(key) {
             $('#online').append('<li onclick="display($(this))">'+data.data[key]+'</li>');
         });
     });
-    socket.on('message', function(msg){
+    socket.on('message', (msg)=> {
         $('#messages').append($('<li>').text(msg));
     });
-    $(function () {
-        $('form').submit(function(){
-            var id = $('#id').val()
-            var message = $('#m').val()
-            socket.emit('send', { id, message });
+    $(()=> {
+        $('form').submit(()=>{
+            let id = $('#id').val()
+            let message = $('#m').val()
+            socket.emit('messageSubmit', { id, message });
             $('#m').val('');
             return false;
         });
     });
 
-    function display(val){
+    display = (val)=>{
         $('#online li').css("background-color", "#eee");
         $(val).css("background-color", "yellow");
         $('#id').val($(val).text())
