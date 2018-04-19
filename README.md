@@ -7,7 +7,7 @@
    - go to `http://localhost:3000/chat`.
    - you can send message by clicking on any online client from right panel.
 
-    client code logic:
+  client code logic:
 
         $('form').submit(function(){
             var id = $('#id').val()
@@ -21,7 +21,7 @@
             $('#messages').append($('<li>').text(msg));
         });
 
-    server code logic:
+  server code logic:
 
         socket.on('send', function(data){
             io.to(data.id).emit('message', data.message);
