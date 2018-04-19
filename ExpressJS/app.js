@@ -24,13 +24,10 @@ io.on('connection', function(socket){
     });
 
     socket.on('subscribe', function(room) {
-        console.log('joining room', room);
-        socket.join(room);
-
+        socket.join(room)
     })
-    socket.on('brodcast', function(data) {
-        console.log('sending message',data);
-        socket.to(data.room).emit('hello', data.message);
+    socket.on('broadcast', function(data) {
+        socket.to(data.room).emit('message', data.message);
     });
     socket.on('unsubscribe', function(room) {
         console.log('leaving room', room);
@@ -38,6 +35,6 @@ io.on('connection', function(socket){
     })
 });
 
-http.listen(4000, ()=>{
-    console.log('listening on *:4000');
+http.listen(3000, ()=>{
+    console.log('listening on *:3000');
 });
