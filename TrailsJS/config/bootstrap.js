@@ -1,6 +1,6 @@
 
 module.exports = function(app){
 
-   app.services.SocketService.socketInit()
+   app.services.SocketService.socketInit(app)
 
 }

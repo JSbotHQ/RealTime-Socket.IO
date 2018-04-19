@@ -9,11 +9,11 @@ const Controller = require('trails/controller')
 module.exports = class SocketController extends Controller {
 
     chat(req,res){
-        res.sendFile(__dirname + '/index.html');
+        return res.sendFile('chat.html', {root: './public'});
     }
 
     group(req, res) {
-        res.sendFile(__dirname +'/group.html');
+        return res.sendFile('group.html', {root: './public'});
     }
 
 }
