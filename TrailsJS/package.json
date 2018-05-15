@@ -7,9 +7,6 @@
   "main": "index.js",
   "dependencies": {
     "express": "^5.0.0-alpha.3",
-    "http": "0.0.0",
-    "socket.io": "^2.1.0",
-    "trailpack-bootstrap": "^2.0.0",
     "trailpack-express": "^2.0.3",
     "trailpack-repl": "^2",
     "trailpack-router": "^2",

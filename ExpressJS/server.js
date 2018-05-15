@@ -6,7 +6,7 @@ const socket = new Socket(http);
 socket.init()
 
 http.listen(3000, ()=>{
-  console.log('listening on *:3000');
+  console.log('listening on *:4002');
 });
 
 // Routes for private chat(peer to peer)
