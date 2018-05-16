@@ -5,7 +5,7 @@ const Socket = require('./socket');
 const socket = new Socket(http);
 socket.init()
 
-http.listen(3000, ()=>{
+http.listen(4002, ()=>{
   console.log('listening on *:4002');
 });
 

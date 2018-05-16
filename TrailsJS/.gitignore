@@ -44,3 +44,4 @@ nbproject
 .node_history
 .tmp
 *.sw*
+package-lock.json
