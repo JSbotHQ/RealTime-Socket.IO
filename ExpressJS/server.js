@@ -5,8 +5,8 @@ const Socket = require('./socket');
 const socket = new Socket(http);
 socket.init()
 
-http.listen(4002, ()=>{
-  console.log('listening on *:4002');
+http.listen(3000, ()=>{
+  console.log('listening on *:3000');
 });
 
 // Routes for private chat(peer to peer)

@@ -19,7 +19,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-    const socket = io('http://'+window.location.hostname+':4002');
+    const socket = io('http://'+window.location.hostname+':3000');
     socket.on('connect', () => {
       $('#messages').append($('<li>').text('ID:'+socket.id));
     });

@@ -17,7 +17,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-    const socket = io('http://'+window.location.hostname+':4002');
+    const socket = io('http://'+window.location.hostname+':3000');
     socket.on('connect', () => {
       $('#messages').append($('<li>').text('ID:'+socket.id));
     });

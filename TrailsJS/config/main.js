@@ -18,7 +18,8 @@ module.exports = {
   packs: [
     require('trailpack-repl'),
     require('trailpack-router'),
-    require('trailpack-express')
+    require('trailpack-express'),
+    require('trailpack-bootstrap')
   ],
 
   /**
