@@ -4,8 +4,8 @@ const Hapi = require('hapi');
 
 // Create a server with a host and port
 const server=Hapi.server({
-  host:'localhost',
-  port:3000
+  host: 'localhost',
+  port: 4002
 });
 
 const Socket = require('./socket')
