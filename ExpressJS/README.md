@@ -2,6 +2,8 @@
 
 ### 1. ExpressJS
 
+  - `cd ExpressJS`
+  - `npm start` start the server.
   i. peer to peer messaging
    - go to `http://localhost:4002/chat`.
    - you can send message by clicking on any online client from right panel.

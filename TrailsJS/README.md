@@ -4,7 +4,7 @@
   - `cd TrailsJS`
   - start the server by `npm start`.
 
-  i. peer to peer messaging
+  #### i. peer to peer messaging
    - go to `http://localhost:4002/chat`.
    - you can send message by clicking on any online client from right panel.
 
@@ -22,7 +22,7 @@
             console.log(msg)
         });
 
-  ii. room messaging
+  #### ii. room messaging
    - go to `http://localhost:4002/group?room={name}`.
    - here you can enter any room name of your choice.
    - now send message to this room and it will be received by all clients in the channel.
