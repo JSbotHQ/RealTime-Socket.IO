@@ -46,10 +46,8 @@
 
    #### iii.Modifier data emit
 
-   ##### -add default data in different data-types: 1.'text', 2.'json', 3.'Binary' 4.'Base64 Image'
-
-    ##### Basic Discription:
-        -Enter below types in text area and get result according to type
+      #####Basic Description:
+       -Enter below types in text area and get result according to type
 
        Type: Text
        1.text/text_small - get small text data
