@@ -47,7 +47,8 @@
 
    #### iii.Modifier data emit
 
-   ####Basic Description:
+   Basic Description:
+
       -Enter below types in text area and get result according to type
 
           Type: Text
