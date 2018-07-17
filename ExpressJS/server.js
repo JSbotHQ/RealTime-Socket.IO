@@ -18,3 +18,8 @@ app.get('/chat', (req, res)=>{
 app.get('/group', (req, res)=> {
     res.sendFile('group.html', {root: './public'});
 });
+
+// Route for modifier
+app.get('/modifier', (req, res)=> {
+    res.sendFile('modifier.html', {root: './public'});
+});

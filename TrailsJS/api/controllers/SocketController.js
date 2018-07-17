@@ -16,5 +16,8 @@ module.exports = class SocketController extends Controller {
         return res.sendFile('group.html', {root: './public'});
     }
 
+    modifier(req, res) {
+        return res.sendFile('modifier.html', {root: './public'});
+    }
 }
 

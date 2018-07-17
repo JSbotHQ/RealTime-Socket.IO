@@ -11,32 +11,37 @@
 
 module.exports = [
 
-  /**
-   * Render the HelloWorld view
-   */
-  {
-    method: 'GET',
-    path: '/',
-    handler: 'ViewController.helloWorld'
-  },
+    /**
+     * Render the HelloWorld view
+     */
+    {
+        method: 'GET',
+        path: '/',
+        handler: 'ViewController.helloWorld'
+    },
 
-  /**
-   * Constrain the DefaultController.info handler to accept only GET requests.
-   */
-  {
-    method: [ 'GET' ],
-    path: '/api/v1/default/info',
-    handler: 'DefaultController.info'
-  },
-  {
-    method: [ 'GET' ],
-    path: '/chat',
-    handler: 'SocketController.chat'
-  },
-  {
-    method: [ 'GET' ],
-    path: '/group',
-    handler: 'SocketController.group'
-  }
+    /**
+     * Constrain the DefaultController.info handler to accept only GET requests.
+     */
+    {
+        method: ['GET'],
+        path: '/api/v1/default/info',
+        handler: 'DefaultController.info'
+    },
+    {
+        method: ['GET'],
+        path: '/chat',
+        handler: 'SocketController.chat'
+    },
+    {
+        method: ['GET'],
+        path: '/group',
+        handler: 'SocketController.group'
+    },
+    {
+        method: ['GET'],
+        path: '/modifier',
+        handler: 'SocketController.modifier'
+    }
 
 ]

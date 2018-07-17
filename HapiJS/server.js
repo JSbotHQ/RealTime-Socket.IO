@@ -44,3 +44,10 @@ server.route({
     return h.file('./public/group.html')
   }
 });
+server.route({
+    method:'GET',
+    path:'/modifier',
+    handler:function(request, h) {
+        return h.file('./public/modifier.html')
+    }
+});
