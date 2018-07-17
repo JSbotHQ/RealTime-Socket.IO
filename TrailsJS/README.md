@@ -43,3 +43,30 @@
       socket.on('broadcast', function(data) {
           socket.to(data.room).emit('message', data.message);
       });
+
+   #### iii.Modifier data emit
+
+   ##### -add default data in different data-types: 1.'text', 2.'json', 3.'Binary' 4.'Base64 Image'
+
+    ##### Basic Discription:
+        -Enter below types in text area and get result according to type
+
+       Type: Text
+       1.text/text_small - get small text data
+       2.text_large      - get large text data
+       3.text_multi      - get multiple text data
+
+       Type: Json
+       1.json_small      - get small json data
+       2.json_large      - get large json data
+       3.json_multi      - get multi json data
+
+       Type: Binary
+       1.binary_small    - get small binary data
+       2.binary_large    - get large binary data
+       3.binary_multi    - get multiple binary data
+
+       Type: Base64 Image
+       1.img_small       - get small image
+       2.img_large       - get large image
+
