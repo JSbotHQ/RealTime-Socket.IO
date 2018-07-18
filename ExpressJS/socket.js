@@ -144,9 +144,9 @@ module.exports = class Socket {
             let text_large = () => socket.emit('message', data.text_large)
             let text_multi = () => socket.emit('message', data.text_small, data.text_large, data.text_small)
             //emit json data
-            let json_small = () => socket.emit('message', JSON.stringify(data.json_small))
-            let json_large = () => socket.emit('message', JSON.stringify(data.json_large))
-            let json_multi = () => socket.emit('message', JSON.stringify(data.json_small), JSON.stringify(data.json_large), JSON.stringify(data.json_small))
+            let json_small = () => socket.emit('message',data.json_small)
+            let json_large = () => socket.emit('message',data.json_large)
+            let json_multi = () => socket.emit('message',data.json_small, data.json_large, data.json_small)
             //emit binary data
             let binary_small = () => socket.emit('message', convert(data.binary_small))
             let binary_large = () => socket.emit('message', convert(data.binary_large))
