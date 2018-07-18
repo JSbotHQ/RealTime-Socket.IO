@@ -52,7 +52,7 @@ module.exports = class SocketService extends Service {
        * get small image base64 string
        */
       let small_imgUrl
-      base64Img.base64('./js_(3.1k).png', (err, data) => {
+      base64Img.base64('../public/js_(3.1k).png', (err, data) => {console.log(data)
           small_imgUrl = data
       })
 
@@ -60,12 +60,12 @@ module.exports = class SocketService extends Service {
        * get large image base64 string
        */
       let large_imgUrl
-      base64Img.base64('./car_(2.1MB).jpg', (err, data) => {
+      base64Img.base64('./public/car_(2.1MB).jpg', (err, data) => {
           large_imgUrl = data
       })
 
       let med_imgUrl
-      base64Img.base64('./apple_(9.8kb).jpeg', (err, data) => {
+      base64Img.base64('./public/apple_(9.8kb).jpeg', (err, data) => {
           med_imgUrl = data
       })
 
