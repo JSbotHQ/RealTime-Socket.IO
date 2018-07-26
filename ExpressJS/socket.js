@@ -1,12 +1,16 @@
 'use strict';
 let io;
 const base64Img = require('base64-img');
+const fs = require("fs");
+const mime = require('mime');
 module.exports = class Socket {
 
     constructor(http) {
 
         io = require('socket.io')(http)
     }
+
+
 
     /**
      * Initialize socket
@@ -45,6 +49,13 @@ module.exports = class Socket {
             }
         }
 
+        let base64_encode = (file) =>{
+            // read binary data
+            let bitmap = fs.readFileSync(file);
+            // convert binary data to base64 encoded string
+            return new Buffer(bitmap).toString('base64');
+        }
+
         /**
          * get small image base64 string
          */
@@ -64,8 +75,10 @@ module.exports = class Socket {
         let med_imgUrl
         base64Img.base64('./public/apple_(9.8kb).jpeg', (err, data) => {
             med_imgUrl = data
-        })
+         })
 
+        let pdffiledata = base64_encode("./public/JavaScript Basics.pdf")
+        let type = mime.lookup("./public/JavaScript Basics.pdf")
 
         /**
          * convert function for string to binary convert
@@ -154,7 +167,9 @@ module.exports = class Socket {
             //emit img data
             let img_small = () => socket.emit('message', {data:small_imgUrl,type:"img"})
             let img_large = () => socket.emit('message',{data:large_imgUrl,type:"img"})
-          //  let img_multi = () => socket.emit('message', small_imgUrl, large_imgUrl, med_imgUrl)
+
+            //send pdf file
+            let pdffile= ()=> socket.emit('message', {data:pdffiledata, type})
 
             /**
              * server side listen
@@ -175,6 +190,8 @@ module.exports = class Socket {
             socket.on('img_small', img_small)
             socket.on('img_large', img_large)
             //socket.on('img_multi', img_multi)
+
+            socket.on('pdffile',pdffile)
             //LISTENERS
             getOnlineFriends()
             socket.on('messageSubmit', onMessageSubmit)
