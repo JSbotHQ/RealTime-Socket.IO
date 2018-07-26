@@ -68,3 +68,6 @@
           Type: Base64 Image
           1.img_small       - get small image
           2.img_large       - get large image
+
+          Type: File
+          1.file - get file
