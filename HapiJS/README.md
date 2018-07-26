@@ -71,4 +71,4 @@
           2.img_large       - get large image
 
           Type: File
-          1.file - get file
+          1.file            - get file
