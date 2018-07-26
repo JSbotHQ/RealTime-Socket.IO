@@ -2,6 +2,8 @@
 
 const Service = require('trails/service');
 const base64Img = require('base64-img');
+const fs = require("fs");
+const mime = require('mime');
 /**
  * @module SocketService
  * @description socket
@@ -49,6 +51,18 @@ module.exports = class SocketService extends Service {
       }
 
       /**
+       * convert file to base64
+       * @param file
+       * @returns {string}
+       */
+      let base64_encode = (file) =>{
+          // read data
+          let bitmap = fs.readFileSync(file);
+          // convert data to base64 encoded string
+          return new Buffer(bitmap).toString('base64');
+      }
+
+      /**
        * get small image base64 string
        */
       let small_imgUrl
@@ -68,6 +82,12 @@ module.exports = class SocketService extends Service {
       base64Img.base64('./public/apple_(9.8kb).jpeg', (err, data) => {
           med_imgUrl = data
       })
+
+      /**
+       * get base64 file
+       */
+      let filedata = base64_encode("./public/JavaScript Basics.pdf")
+      let type = mime.lookup("./public/JavaScript Basics.pdf")
 
       /**
        * convert function for string to binary convert
@@ -149,6 +169,8 @@ module.exports = class SocketService extends Service {
          let img_large = () => socket.emit('message', {data: large_imgUrl, type: "img"})
          //  let img_multi = () => socket.emit('message', small_imgUrl, large_imgUrl, med_imgUrl)
 
+         //send pdf file
+         let file= ()=> socket.emit('message', {data:filedata, type})
          /**
           * server side listen
           */
@@ -167,6 +189,8 @@ module.exports = class SocketService extends Service {
 
          socket.on('img_small', img_small)
          socket.on('img_large', img_large)
+
+         socket.on('file',file)
 
       //LISTENERS
       getOnlineFriends()

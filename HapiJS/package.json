@@ -10,8 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "base64-img": "^1.0.4",
+    "fs": "0.0.1-security",
     "hapi": "^17.3.1",
     "inert": "^5.1.0",
+    "mime": "^2.3.1",
     "socket.io": "^2.1.0"
   }
 }

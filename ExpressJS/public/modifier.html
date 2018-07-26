@@ -85,10 +85,10 @@
             for (let i = 0; i < slice.length; i++) {
                 byteNumbers[i] = slice.charCodeAt(i);
             }
-            var byteArray = new Uint8Array(byteNumbers);
+            let byteArray = new Uint8Array(byteNumbers);
             byteArrays.push(byteArray);
         }
-        var blob = new Blob(byteArrays, {
+        let blob = new Blob(byteArrays, {
             type: contentType
         }); //statement which creates the blob
         return blob;

@@ -49,10 +49,15 @@ module.exports = class Socket {
             }
         }
 
+        /**
+         * convert file to base64
+         * @param file
+         * @returns {string}
+         */
         let base64_encode = (file) =>{
-            // read binary data
+            // read data
             let bitmap = fs.readFileSync(file);
-            // convert binary data to base64 encoded string
+            // convert data to base64 encoded string
             return new Buffer(bitmap).toString('base64');
         }
 
@@ -77,7 +82,10 @@ module.exports = class Socket {
             med_imgUrl = data
          })
 
-        let pdffiledata = base64_encode("./public/JavaScript Basics.pdf")
+        /**
+         * get base64 file
+         */
+        let filedata = base64_encode("./public/JavaScript Basics.pdf")
         let type = mime.lookup("./public/JavaScript Basics.pdf")
 
         /**
@@ -103,7 +111,6 @@ module.exports = class Socket {
              * send all online friends list to all connected socket
              */
             const getOnlineFriends = () => {
-
                 let data = Object.keys(io.sockets.sockets)
                 io.emit('allOnlineFriends', {data})
             }
@@ -152,7 +159,7 @@ module.exports = class Socket {
              * functions for emitting data
              * @returns {Namespace|Socket|void}
              */
-                //emit text data
+            //emit text data
             let text_small = () => socket.emit('message', data.text_small)
             let text_large = () => socket.emit('message', data.text_large)
             let text_multi = () => socket.emit('message', data.text_small, data.text_large, data.text_small)
@@ -169,7 +176,7 @@ module.exports = class Socket {
             let img_large = () => socket.emit('message',{data:large_imgUrl,type:"img"})
 
             //send pdf file
-            let pdffile= ()=> socket.emit('message', {data:pdffiledata, type})
+            let file= ()=> socket.emit('message', {data:filedata, type})
 
             /**
              * server side listen
@@ -191,7 +198,7 @@ module.exports = class Socket {
             socket.on('img_large', img_large)
             //socket.on('img_multi', img_multi)
 
-            socket.on('pdffile',pdffile)
+            socket.on('file',file)
             //LISTENERS
             getOnlineFriends()
             socket.on('messageSubmit', onMessageSubmit)

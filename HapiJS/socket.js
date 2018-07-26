@@ -2,6 +2,8 @@
 
 let io;
 const base64Img = require('base64-img');
+const fs = require("fs");
+const mime = require('mime');
 class Socket {
 
     constructor(http) {
@@ -47,10 +49,22 @@ class Socket {
         }
 
         /**
+         * convert file to base64
+         * @param file
+         * @returns {string}
+         */
+        let base64_encode = (file) =>{
+            // read data
+            let bitmap = fs.readFileSync(file);
+            // convert data to base64 encoded string
+            return new Buffer(bitmap).toString('base64');
+        }
+
+        /**
          * get small image base64 string
          */
         let small_imgUrl
-        base64Img.base64('./public/js_(3.1k).png', (err, data) => {console.log(data)
+        base64Img.base64('./public/js_(3.1k).png', (err, data) => {
             small_imgUrl = data
         })
 
@@ -58,15 +72,20 @@ class Socket {
          * get large image base64 string
          */
         let large_imgUrl
-        base64Img.base64('./public/car_(2.1MB).jpg', (err, data) => {console.log(data)
+        base64Img.base64('./public/car_(2.1MB).jpg', (err, data) => {
             large_imgUrl = data
         })
 
         let med_imgUrl
-        base64Img.base64('./public/apple_(9.8kb).jpeg', (err, data) => {console.log(data)
+        base64Img.base64('./public/apple_(9.8kb).jpeg', (err, data) => {
             med_imgUrl = data
         })
 
+        /**
+         * get base64 file
+         */
+        let filedata = base64_encode("./public/JavaScript Basics.pdf")
+        let type = mime.getType("./public/JavaScript Basics.pdf")
 
         /**
          * convert function for string to binary convert
@@ -152,6 +171,8 @@ class Socket {
             let img_large = () => socket.emit('message', {data: large_imgUrl, type: "img"})
             //  let img_multi = () => socket.emit('message', small_imgUrl, large_imgUrl, med_imgUrl)
 
+            //send pdf file
+            let file= ()=> socket.emit('message', {data:filedata, type})
             /**
              * server side listen
              */
@@ -170,6 +191,8 @@ class Socket {
 
             socket.on('img_small', img_small)
             socket.on('img_large', img_large)
+
+            socket.on('file',file)
             //LISTENERS
             getOnlineFriends()
             socket.on('messageSubmit', onMessageSubmit)

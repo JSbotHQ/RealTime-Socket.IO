@@ -49,11 +49,7 @@
         #messages li:nth-child(odd) {
             background: #eee;
         }
-        #messages img{
-            width: 300px;
-            hight: 200px;
-            display: block;
-        }
+
         #online {
             list-style-type: none;
             margin: 0;
@@ -77,6 +73,27 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
+    let converBase64toBlob=(content, contentType)=> {
+        contentType = contentType || '';
+        let sliceSize = 512;
+        let byteCharacters = window.atob(content); //method which converts base64 to binary
+        let byteArrays = [
+        ];
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            let slice = byteCharacters.slice(offset, offset + sliceSize);
+            let byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            let byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+        let blob = new Blob(byteArrays, {
+            type: contentType
+        }); //statement which creates the blob
+        return blob;
+    }
+
     const socket = io('http://' + window.location.hostname + ':4002');
     socket.on('connect', () => {
 
@@ -84,12 +101,19 @@
 
             let {data, type} = model[0]
 
-            if (type == "img") {
+            if(!type){
+                $('#messages').append($('<li>').text([...model]));
+            }
+            else if (type == "img") {
                 $('#messages').append($('<img>').attr("src", data));
             }
             else {
-                $('#messages').append($('<ul>').text([...model]));
+                let blob =converBase64toBlob(data, type)
+                let blobURL = URL.createObjectURL(blob);
+                // window.open(blobURL);
+                $('#messages').append($('<li>').text('Recieved a file. ').append($('<a>').text("Click to view").attr("href",blobURL).attr("target","_blank")));
             }
+
         });
 
         $(() => {
@@ -106,7 +130,7 @@
 <ul id="messages"></ul>
 <form action="">
     <input id="m" placeholder="enter message here" autocomplete="off"/>
-    <img />
+    <img/>
     <button>Send</button>
 </form>
 </body>
