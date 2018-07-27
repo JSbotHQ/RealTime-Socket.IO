@@ -23,7 +23,7 @@
         form input {
             border: 1px solid #c5bfbf;
             padding: 10px;
-            width: 60%;
+            width: 40%;
         }
 
         form button {
@@ -73,12 +73,11 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-    let converBase64toBlob=(content, contentType)=> {
+    let converBase64toBlob = (content, contentType) => {
         contentType = contentType || '';
         let sliceSize = 512;
         let byteCharacters = window.atob(content); //method which converts base64 to binary
-        let byteArrays = [
-        ];
+        let byteArrays = [];
         for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
             let slice = byteCharacters.slice(offset, offset + sliceSize);
             let byteNumbers = new Array(slice.length);
@@ -94,33 +93,56 @@
         return blob;
     }
 
+    function emitBase64(file, name) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            let result = reader.result.split(';base64,')
+            socket.emit('receivingFile', {type: result[0].replace('data:', ''), data: result[1], name });
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
+
     const socket = io('http://' + window.location.hostname + ':4002');
     socket.on('connect', () => {
-
+        let filename
         socket.on('message', (...model) => {
 
-            let {data, type} = model[0]
+            let {data, type, name} = model[0]
 
-            if(!type){
+            if (!type) {
                 $('#messages').append($('<li>').text([...model]));
             }
             else if (type == "img") {
                 $('#messages').append($('<img>').attr("src", data));
             }
             else {
-                let blob =converBase64toBlob(data, type)
+                console.log([...model])
+                let blob = converBase64toBlob(data, type)
                 let blobURL = URL.createObjectURL(blob);
                 // window.open(blobURL);
-                $('#messages').append($('<li>').text('Recieved a file. ').append($('<a>').text("Click to view").attr("href",blobURL).attr("target","_blank")));
+                $('#messages').append($('<li>').append($('<p>').text("Recieved a file. ").append($('<span>').text(name).css({'font-weight':'bold'}))).append($('<a>').text("Click to view").attr("href", blobURL).attr("target", "_blank")));
             }
 
         });
 
         $(() => {
+
             $('form').submit(() => {
                 let message = $('#m').val()
                 socket.emit(message);
                 $('#m').val('');
+                return false;
+            });
+            $('#toggle').click(() => {
+                let files = $('#file')[0].files
+                   filename = files[0].name;
+
+                if (files.length > 0) {
+                    emitBase64(files[0], filename)
+                }
                 return false;
             });
         });
@@ -130,8 +152,9 @@
 <ul id="messages"></ul>
 <form action="">
     <input id="m" placeholder="enter message here" autocomplete="off"/>
-    <img/>
-    <button>Send</button>
+    <button id="submit">Send</button>
+    <input id="file" type="file"/>
+    <button id="toggle" type="button" style="bottom: 0;">Send File</button>
 </form>
 </body>
 </html>

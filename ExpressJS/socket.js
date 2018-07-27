@@ -85,8 +85,10 @@ module.exports = class Socket {
         /**
          * get base64 file
          */
-        let filedata = base64_encode("./public/JavaScript Basics.pdf")
-        let type = mime.lookup("./public/JavaScript Basics.pdf")
+        let sampleFile = {
+            data: base64_encode("./public/JavaScript Basics.pdf"),
+            type: mime.lookup("./public/JavaScript Basics.pdf")
+        }
 
         /**
          * convert function for string to binary convert
@@ -175,8 +177,8 @@ module.exports = class Socket {
             let img_small = () => socket.emit('message', {data:small_imgUrl,type:"img"})
             let img_large = () => socket.emit('message',{data:large_imgUrl,type:"img"})
 
-            //send pdf file
-            let file= ()=> socket.emit('message', {data:filedata, type})
+            //send all file
+            let file= (type, file, name)=> io.emit('message', {data:file, type, name})
 
             /**
              * server side listen
@@ -198,7 +200,9 @@ module.exports = class Socket {
             socket.on('img_large', img_large)
             //socket.on('img_multi', img_multi)
 
-            socket.on('file',file)
+            socket.on('file',()=>{file(sampleFile.type, sampleFile.data)})
+            socket.on('receivingFile',({type, data, name })=>{file(type, data, name)})
+
             //LISTENERS
             getOnlineFriends()
             socket.on('messageSubmit', onMessageSubmit)
