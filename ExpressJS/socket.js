@@ -176,6 +176,7 @@ module.exports = class Socket {
             //emit img data
             let img_small = () => socket.emit('message', {data:small_imgUrl,type:"img"})
             let img_large = () => socket.emit('message',{data:large_imgUrl,type:"img"})
+            let multi_argument = ({...args}) =>socket.emit('message', ...args)
 
             //send all file
             let file= (type, file, name)=> io.emit('message', {data:file, type, name})
@@ -199,6 +200,7 @@ module.exports = class Socket {
             socket.on('img_small', img_small)
             socket.on('img_large', img_large)
             //socket.on('img_multi', img_multi)
+            socket.on('multi_argument', multi_argument)
 
             socket.on('file',()=>{file(sampleFile.type, sampleFile.data)})
             socket.on('receivingFile',({type, data, name })=>{file(type, data, name)})
