@@ -123,9 +123,8 @@
                 let blob = converBase64toBlob(data, type)
                 let blobURL = URL.createObjectURL(blob);
                 // window.open(blobURL);
-                $('#messages').append($('<li>').append($('<p>').text("Recieved a file. ").append($('<span>').text(name).css({'font-weight':'bold'}))).append($('<a>').text("Click to view").attr("href", blobURL).attr("target", "_blank")));
+                $('#messages').append($('<li>').append($('<p>').text("Recieved a file. ").append($('<span>').text(name).css({'font-weight':'bold'}))).append($('<a>').text("Click to view").attr("href", blobURL).attr("target", "_blank").attr("download",name)));
             }
-
         });
 
         $(() => {
